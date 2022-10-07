@@ -8,10 +8,10 @@
             <v-card-text>
                 <v-form>
                     <v-text-field
-                        v-model="username"
+                        v-model="email"
                         prepend-icon="mdi-account"
-                        name="username"
-                        label="Login"
+                        name="email"
+                        label="Email"
                         type="text"
                     ></v-text-field>
                     <v-text-field
@@ -26,7 +26,7 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="primary"  @click="login">Login</v-btn>
+                <v-btn color="primary"  @click="userLogin()">Login</v-btn>
             </v-card-actions>
         </v-card>
       </v-col>
@@ -38,16 +38,35 @@
     name: 'LoginPage',
     data() {
         return {
-            username: 'uuu',
-            password: 'xxx'
+            email: 'teste@gmail.com',
+            password: '12345'
         }
     },
+    mounted() {
+        console.log(this)
+        console.log(this.$auth)
+        console.log(this.$auth.loggedIn)
+    },
     methods: {
-        async login() {
-            await this.$axios.$post('http://localhost:3000/auth/sign_in', { 'username': this.username, 'password': this.password })
+        async userLogin() {
+            try {
+                const response = await this.$auth.loginWith('local', { data: { 'email': this.email, 'password': this.password } });
+                
+                this.$auth.setUser(response.data.user);
+                this.$auth.strategy.token.set(response.data.user.accessToken);
+                console.log(await this.$auth.fetchUser());
+                console.log(response);
+            } catch (err) {
+                console.log(err)
+            }
+        },
+        async loginUser() {
+            
+            await this.$axios.$post('/auth/sign_in', { 'email': this.email, 'password': this.password })
                 .then(function (response) {
                     console.log(response);
-                });
+                }); 
+           
         },
         async loginGov() {
             //  https://sso.staging.acesso.gov.br/authorize?response_type=code&client_id=ec4318d6-f797-4d65-b4f7-39a33bf4d544&scope=openid+email+profile&redirect_uri=http%3A%2F%2Fappcliente.com.br%2Fphpcliente%2Floginecidadao.Php&nonce=3ed8657fd74c&state=358578ce6728b%

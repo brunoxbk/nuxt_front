@@ -55,11 +55,11 @@
             console.log(this);
             this.$router.push('/login');
         },
-        async sign_up({ $router }) {
+        async sign_up() {
             const self = this;
-            await this.$axios.$post('http://localhost:3000/auth/sign_up', { 'name': this.name, 'email': this.email, 'password': this.password })
+            await this.$axios.$post('/auth/sign_up', { 'name': this.name, 'email': this.email, 'password': this.password })
                 .then(function (response) {
-                    console.log(response);
+                    
                     self.$router.push('/login');
                 });
         },

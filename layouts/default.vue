@@ -81,6 +81,11 @@ export default {
           title: 'Sign Up',
           to: '/sign_up',
         },
+        {
+          icon: 'mdi-account',
+          title: 'Home',
+          to: '/home',
+        },
       ],
       miniVariant: false,
       right: true,
