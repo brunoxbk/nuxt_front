@@ -46,15 +46,18 @@
         console.log(this)
         console.log(this.$auth)
         console.log(this.$auth.loggedIn)
+        if (this.$auth.loggedIn) {
+            this.$router.push('/home')
+        }
     },
     methods: {
         async userLogin() {
             try {
                 const response = await this.$auth.loginWith('local', { data: { 'email': this.email, 'password': this.password } });
                 
-                this.$auth.setUser(response.data.user);
-                this.$auth.strategy.token.set(response.data.user.accessToken);
-                console.log(await this.$auth.fetchUser());
+                // this.$auth.setUser(response.data.user);
+                // this.$auth.strategy.token.set(response.data.user.accessToken);
+                // console.log(await this.$auth.fetchUser());
                 console.log(response);
             } catch (err) {
                 console.log(err)
